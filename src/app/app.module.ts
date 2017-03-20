@@ -1,14 +1,22 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import {BrowserModule} from '@angular/platform-browser';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
-// import { HomePage } from '../pages/home/home';
+
 import { TutorialPage } from '../pages/tutorial/tutorial';
+import { MainPage } from '../pages/main/main';
+import { VideosPage } from '../pages/videos/videos';
+import { AboutPage } from '../pages/about/about';
+
 
 @NgModule({
   declarations: [
     MyApp,
-    TutorialPage
+    TutorialPage,
+    MainPage,
+    VideosPage,
+    AboutPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -17,7 +25,10 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    TutorialPage
+    TutorialPage,
+    MainPage,
+    VideosPage,
+    AboutPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

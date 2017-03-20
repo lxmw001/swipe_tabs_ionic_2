@@ -1,32 +1,50 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { MenuController, NavController, Slides } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-// import { TabsPage } from '../tabs/tabs';
+import { MainPage } from '../main/main';
+import { VideosPage } from '../videos/videos';
+import { AboutPage } from '../about/about';
 
 @Component({
   selector: 'page-tutorial',
   templateUrl: 'tutorial.html'
 })
 
-export class TutorialPage {
-  showSkip = true;
+export class TutorialPage implements OnInit {
 
+  titles = ['Main', 'Videos', 'About'];
+  title = this.titles[0];
+
+  @ViewChild('mainPage', {read: ViewContainerRef}) mainPage: ViewContainerRef;
+  @ViewChild('videosPage', {read: ViewContainerRef}) videosPage: ViewContainerRef;
+  @ViewChild('aboutPage', {read: ViewContainerRef}) aboutPage: ViewContainerRef;
   @ViewChild('slides') slides: Slides;
 
   constructor(
     public navCtrl: NavController,
     public menu: MenuController,
+    private compFactoryResolver: ComponentFactoryResolver,
     public storage: Storage
-  ) { }
+  ) {
+  }
 
-  startApp() {
-    // this.navCtrl.push(TabsPage).then(() => {
-    //   this.storage.set('hasSeenTutorial', 'true');
-    // })
+  ngOnInit(){
+    this.initPages();
+  }
+
+  initPages() {
+    let compFactory = this.compFactoryResolver.resolveComponentFactory(MainPage);
+    this.mainPage.createComponent(compFactory);
+
+    compFactory = this.compFactoryResolver.resolveComponentFactory(VideosPage);
+    this.videosPage.createComponent(compFactory);
+
+    compFactory = this.compFactoryResolver.resolveComponentFactory(AboutPage);
+    this.aboutPage.createComponent(compFactory);
   }
 
   onSlideChangeStart(slider: Slides) {
-    this.showSkip = !slider.isEnd();
+    this.title = this.titles[slider.realIndex];
   }
 
   ionViewWillEnter() {
