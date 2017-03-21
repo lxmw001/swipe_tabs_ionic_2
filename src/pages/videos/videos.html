@@ -1,4 +1,7 @@
 <div>
   Videos page from another template
-  <button (click)="click()">Videos button</button>
+  <input placeholder="Enter a video id" #videoId>
+  <button (click)="playVideo(videoId.value)">
+     <ion-icon name="play"></ion-icon>
+  </button>
 </div>
