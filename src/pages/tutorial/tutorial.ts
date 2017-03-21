@@ -1,5 +1,6 @@
 import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { MenuController, NavController, Slides } from 'ionic-angular';
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import { Storage } from '@ionic/storage';
 import { MainPage } from '../main/main';
 import { VideosPage } from '../videos/videos';
@@ -14,6 +15,9 @@ export class TutorialPage implements OnInit {
 
   titles = ['Main', 'Videos', 'About'];
   title = this.titles[0];
+  videos: FirebaseListObservable<any>;
+  item: any;
+
 
   @ViewChild('mainPage', {read: ViewContainerRef}) mainPage: ViewContainerRef;
   @ViewChild('videosPage', {read: ViewContainerRef}) videosPage: ViewContainerRef;
@@ -24,12 +28,19 @@ export class TutorialPage implements OnInit {
     public navCtrl: NavController,
     public menu: MenuController,
     private compFactoryResolver: ComponentFactoryResolver,
-    public storage: Storage
+    public storage: Storage,
+    public angularFire: AngularFire
   ) {
+    this.videos = angularFire.database.list('videos');
+    this.item = angularFire.database.object('/videos', { preserveSnapshot: true });
   }
 
   ngOnInit(){
     this.initPages();
+    this.item.subscribe(snapshot => {
+      console.log(snapshot.key)
+      console.log(snapshot.val())
+    });
   }
 
   initPages() {
